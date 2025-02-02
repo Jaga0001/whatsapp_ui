@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:whatsapp_ui/Call_Page/call_page.dart';
 import 'package:whatsapp_ui/Chat_Page/chat_page.dart';
 import 'package:whatsapp_ui/Status_Page/status_page.dart';
 
@@ -67,13 +68,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: [
-            ChatPage(),
-            StatusPage(),
-            Center(
-              child: Text('Calls'),
-            ),
-          ],
+          children: [ChatPage(), StatusPage(), CallPage()],
         ),
       ),
     );
