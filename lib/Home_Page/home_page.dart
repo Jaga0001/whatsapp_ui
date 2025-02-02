@@ -68,13 +68,7 @@ class HomePage extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: [
-            ChatPage(),
-            StatusPage(),
-            Center(
-              child: Text('Calls'),
-            ),
-          ],
+          children: [ChatPage(), StatusPage(), CallPage()],
         ),
       ),
     );
