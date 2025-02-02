@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_ui/Models/user_model.dart';
 
-class MyContacts extends StatefulWidget {
-  const MyContacts({super.key});
+class ChatPage extends StatefulWidget {
+  const ChatPage({super.key});
 
   @override
-  State<MyContacts> createState() => _MyContactsState();
+  State<ChatPage> createState() => _ChatPageState();
 }
 
-class _MyContactsState extends State<MyContacts> {
+class _ChatPageState extends State<ChatPage> {
   List<Usermodel> Users = [
     Usermodel(
       UserName: 'Peter',

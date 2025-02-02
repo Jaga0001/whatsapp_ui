@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:whatsapp_ui/Chat_Page/chat_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -75,9 +76,7 @@ class HomePage extends StatelessWidget {
             Center(
               child: Text('Welcome to Community'),
             ),
-            Center(
-              child: Text('Chats'),
-            ),
+            ChatPage(),
             Center(
               child: Text('Status'),
             ),
