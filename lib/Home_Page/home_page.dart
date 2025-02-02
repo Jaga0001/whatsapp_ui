@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:whatsapp_ui/Chat_Page/chat_page.dart';
+import 'package:whatsapp_ui/Status_Page/status_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-      length: 4,
+      length: 3,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color(0XFF017B6B),
@@ -35,12 +36,6 @@ class HomePage extends StatelessWidget {
           bottom: TabBar(
             indicatorColor: Colors.white,
             tabs: [
-              Tab(
-                icon: Icon(
-                  Icons.group,
-                  color: Colors.white,
-                ),
-              ),
               Tab(
                 child: Text(
                   'CHATS',
@@ -73,13 +68,8 @@ class HomePage extends StatelessWidget {
         ),
         body: TabBarView(
           children: [
-            Center(
-              child: Text('Welcome to Community'),
-            ),
             ChatPage(),
-            Center(
-              child: Text('Status'),
-            ),
+            StatusPage(),
             Center(
               child: Text('Calls'),
             ),
