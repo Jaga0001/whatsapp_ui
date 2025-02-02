@@ -56,7 +56,6 @@ class _MessagePageState extends State<MessagePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0XFF017B6B),
-        leadingWidth: 0,
         title: Row(
           children: [
             CircleAvatar(

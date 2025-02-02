@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:whatsapp_ui/Message_Page/message_page.dart';
+import 'package:whatsapp_ui/Home_Page/home_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,11 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'WhatsApp UI',
-      home: MessagePage(
-        name: 'Peter',
-        image:
-            'https://cdn.pixabay.com/photo/2023/04/28/23/32/ai-generated-7957457_1280.png',
-      ),
+      home: HomePage(),
     );
   }
 }
