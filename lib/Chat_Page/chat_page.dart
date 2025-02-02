@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp_ui/Message_Page/message_page.dart';
 import 'package:whatsapp_ui/Models/user_model.dart';
 
 class ChatPage extends StatefulWidget {
@@ -117,6 +118,15 @@ class _ChatPageState extends State<ChatPage> {
                 return Column(
                   children: [
                     ListTile(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MessagePage(
+                            name: User.UserName!,
+                            image: User.UserImage!,
+                          ),
+                        ),
+                      ),
                       title: Text(
                         User.UserName!,
                         style: TextStyle(
