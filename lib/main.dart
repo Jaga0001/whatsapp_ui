@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:whatsapp_ui/Home_Page/home_page.dart';
+import 'package:whatsapp_ui/Splash_Screen_Page/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +11,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'WhatsApp UI',
-      home: HomePage(),
+      home: SplashScreen(),
     );
   }
 }

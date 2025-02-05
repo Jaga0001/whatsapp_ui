@@ -93,28 +93,66 @@ class _ChatPageState extends State<ChatPage> {
         icon: Icon(Icons.done_all)),
   ];
 
+  // Controller for the search bar
+  TextEditingController _searchController = TextEditingController();
+
+  // Filtered list of users based on search query
+  List<Usermodel> filteredUsers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    // Initialize filteredUsers with all users
+    filteredUsers = Users;
+    // Listen for changes in the search bar
+    _searchController.addListener(_filterUsers);
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  // Function to filter users based on search query
+  void _filterUsers() {
+    String query = _searchController.text.toLowerCase();
+    setState(() {
+      filteredUsers = Users.where((user) =>
+          user.UserName!.toLowerCase().contains(query) ||
+          user.UserDesc!.toLowerCase().contains(query)).toList();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
+          // Search Bar
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Search...',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(25),
+            padding: const EdgeInsets.all(10),
+            child: Container(
+              height: 50,
+              width: 500,
+              child: TextField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search...',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                 ),
               ),
             ),
           ),
+          // List of Users
           Expanded(
             child: ListView.builder(
-              itemCount: Users.length,
+              itemCount: filteredUsers.length,
               itemBuilder: (context, index) {
-                final User = Users[index];
+                final User = filteredUsers[index];
                 return Column(
                   children: [
                     ListTile(
@@ -130,11 +168,11 @@ class _ChatPageState extends State<ChatPage> {
                       title: Text(
                         User.UserName!,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
+                            fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       trailing: Text(User.time!),
                       leading: CircleAvatar(
-                        radius: 30,
+                        radius: 23,
                         backgroundImage: NetworkImage(User.UserImage!),
                       ),
                       subtitle: Row(
@@ -142,7 +180,7 @@ class _ChatPageState extends State<ChatPage> {
                           Icon(
                             User.icon!.icon,
                             color: User.color,
-                            size: 16,
+                            size: 14,
                           ),
                           SizedBox(
                             width: 2,
