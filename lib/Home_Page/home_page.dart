@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:whatsapp_ui/Call_Page/call_page.dart';
 import 'package:whatsapp_ui/Chat_Page/chat_page.dart';
 import 'package:whatsapp_ui/Link_Devices_Page/link_devices_page.dart';
+import 'package:whatsapp_ui/Settings_Page/settings_page.dart';
 import 'package:whatsapp_ui/Status_Page/status_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -47,8 +48,6 @@ class _HomePageState extends State<HomePage> {
                 chat.toLowerCase().contains(_searchText.toLowerCase()))
             .toList();
       }
-      print('Search text: $_searchText');
-      print('Filtered chats: $filteredChats');
     });
   }
 
@@ -165,7 +164,12 @@ class _HomePageState extends State<HomePage> {
                           style: GoogleFonts.poppins(color: Colors.white)),
                     ),
                     PopupMenuItem<String>(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => SettingsPage()));
+                      },
                       value: 'Settings',
                       child: Text('Settings',
                           style: GoogleFonts.poppins(color: Colors.white)),
@@ -215,8 +219,12 @@ class _HomePageState extends State<HomePage> {
             ChatPage(
               searchText: _searchText,
             ),
-            StatusPage(),
-            CallPage()
+            StatusPage(
+              searchText: _searchText,
+            ),
+            CallPage(
+              searchText: _searchText,
+            )
           ],
         ),
       ),

@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp_ui/Models/calls_model.dart';
 
 class CallPage extends StatefulWidget {
-  const CallPage({super.key});
+  final String searchText;
+
+  const CallPage({Key? key, required this.searchText}) : super(key: key);
 
   @override
   State<CallPage> createState() => _CallPageState();
 }
 
 class _CallPageState extends State<CallPage> {
-  final List<CallsModel> calls = [
+  final List<CallsModel> allCalls = [
     CallsModel(
       image:
           'https://th.bing.com/th/id/OIP.i9tgTvW8-5xhrPhsAUedOQHaFm?rs=1&pid=ImgDetMain',
@@ -100,6 +102,36 @@ class _CallPageState extends State<CallPage> {
     ),
   ];
 
+  List<CallsModel> filteredCalls = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _filterCalls();
+  }
+
+  @override
+  void didUpdateWidget(covariant CallPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.searchText != widget.searchText) {
+      _filterCalls();
+    }
+  }
+
+  void _filterCalls() {
+    setState(() {
+      if (widget.searchText.isEmpty) {
+        filteredCalls = List.from(allCalls);
+      } else {
+        filteredCalls = allCalls
+            .where((call) => call.name
+                .toLowerCase()
+                .contains(widget.searchText.toLowerCase()))
+            .toList();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -136,9 +168,9 @@ class _CallPageState extends State<CallPage> {
         ),
       ),
       body: ListView.builder(
-        itemCount: calls.length,
+        itemCount: filteredCalls.length,
         itemBuilder: (context, index) {
-          final call = calls[index];
+          final call = filteredCalls[index];
           return ListTile(
             leading: CircleAvatar(
               backgroundImage: NetworkImage(call.image),
