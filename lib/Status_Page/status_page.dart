@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_ui/Models/status_model.dart';
 
-class StatusPage extends StatelessWidget {
-  StatusPage({super.key});
+class StatusPage extends StatefulWidget {
+  final String searchText;
 
-  final List<StatusModel> Status = [
+  const StatusPage({Key? key, required this.searchText}) : super(key: key);
+
+  @override
+  State<StatusPage> createState() => _StatusPageState();
+}
+
+class _StatusPageState extends State<StatusPage> {
+  final List<StatusModel> allStatuses = [
     StatusModel(
         name: 'Peter',
         time: '09:00 PM',
@@ -36,6 +43,36 @@ class StatusPage extends StatelessWidget {
         image:
             'https://cdn.pixabay.com/photo/2015/04/23/22/00/drop-of-water-736885__480.jpg'),
   ];
+
+  List<StatusModel> filteredStatuses = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _filterStatuses();
+  }
+
+  @override
+  void didUpdateWidget(covariant StatusPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.searchText != widget.searchText) {
+      _filterStatuses();
+    }
+  }
+
+  void _filterStatuses() {
+    setState(() {
+      if (widget.searchText.isEmpty) {
+        filteredStatuses = List.from(allStatuses);
+      } else {
+        filteredStatuses = allStatuses
+            .where((status) => status.name
+                .toLowerCase()
+                .contains(widget.searchText.toLowerCase()))
+            .toList();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,9 +159,9 @@ class StatusPage extends StatelessWidget {
               ),
               Expanded(
                   child: ListView.builder(
-                      itemCount: Status.length,
+                      itemCount: filteredStatuses.length,
                       itemBuilder: (context, index) {
-                        final StatusModel status = Status[index];
+                        final StatusModel status = filteredStatuses[index];
                         return ListTile(
                           leading: Container(
                             height: 50, // Increased from 60

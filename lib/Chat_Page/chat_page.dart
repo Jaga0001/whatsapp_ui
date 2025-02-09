@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:whatsapp_ui/Full_Screen_Image_Page/Full_Screen_Image_Page.dart';
 import 'package:whatsapp_ui/Message_Page/message_page.dart';
 import 'package:whatsapp_ui/Models/user_model.dart';
 
 class ChatPage extends StatefulWidget {
   final String searchText;
-  //final List<String> filteredChats; // No longer needed.
 
   const ChatPage({Key? key, required this.searchText}) : super(key: key);
 
@@ -94,36 +94,38 @@ class _ChatPageState extends State<ChatPage> {
         time: '12:00 PM',
         color: Colors.blue,
         icon: Icon(Icons.done_all)),
+    Usermodel(
+        UserName: 'Harry',
+        UserDesc: 'You come to Hawkwarts',
+        UserImage:
+            'https://images.squarespace-cdn.com/content/51b3dc8ee4b051b96ceb10de/1372481512235-MLENBZ6M35ZONDMGBRWL/HarryPotterPromoPic1.jpg?format=1000w&content-type=image%2Fjpeg',
+        time: '09:00 PM',
+        color: Colors.grey,
+        icon: Icon(Icons.done_all)),
+    Usermodel(
+        UserName: 'Ronnie',
+        UserDesc: 'I am in Home',
+        UserImage:
+            'https://th.bing.com/th/id/OIP.ldun9nlPmfdjhi1epE10RQHaFj?w=212&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7',
+        time: '09:00 PM',
+        color: Colors.blue,
+        icon: Icon(Icons.done_all)),
   ];
 
-  // Controller for the search bar (no longer needed here)
-  // TextEditingController _searchController = TextEditingController();
-
-  // Filtered list of users based on search query
   List<Usermodel> filteredUsers = [];
 
   @override
   void initState() {
     super.initState();
-    // Initialize filteredUsers based on initial searchText
     _filterUsers();
-    // No longer need to listen for changes in the search bar here.
-    // _searchController.addListener(_filterUsers);
   }
 
   @override
   void didUpdateWidget(covariant ChatPage oldWidget) {
     super.didUpdateWidget(oldWidget);
-    //Re-filter only when the searchText changes.
     if (widget.searchText != oldWidget.searchText) {
       _filterUsers();
     }
-  }
-
-  @override
-  void dispose() {
-    // _searchController.dispose(); // No longer needed
-    super.dispose();
   }
 
   // Function to filter users based on search query
@@ -134,6 +136,70 @@ class _ChatPageState extends State<ChatPage> {
           user.UserName!.toLowerCase().contains(query) ||
           user.UserDesc!.toLowerCase().contains(query)).toList();
     });
+  }
+
+  void _showFullScreenImage(BuildContext context, String imageUrl) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FullScreenImagePage(imageUrl: imageUrl),
+      ),
+    ).then((_) {
+      setState(() {
+        // You can add code here to refresh the ChatPage if needed.
+        // For example, re-filter the users:
+        _filterUsers();
+      });
+    });
+  }
+
+  void _showProfileImage(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          child: GestureDetector(
+            onTap: () {
+              _showFullScreenImage(
+                  context, imageUrl); // Show full screen on tap
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    spreadRadius: 3,
+                    blurRadius: 7,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: Image.network(
+                  imageUrl,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (BuildContext context, Widget child,
+                      ImageChunkEvent? loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -164,9 +230,14 @@ class _ChatPageState extends State<ChatPage> {
                             fontWeight: FontWeight.bold, fontSize: 16),
                       ),
                       trailing: Text(User.time!),
-                      leading: CircleAvatar(
-                        radius: 23,
-                        backgroundImage: NetworkImage(User.UserImage!),
+                      leading: GestureDetector(
+                        onTap: () {
+                          _showProfileImage(context, User.UserImage!);
+                        },
+                        child: CircleAvatar(
+                          radius: 23,
+                          backgroundImage: NetworkImage(User.UserImage!),
+                        ),
                       ),
                       subtitle: Row(
                         children: [
