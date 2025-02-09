@@ -9,6 +9,12 @@ class LinkDevicesPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            )),
         backgroundColor: const Color(0XFF017B6B),
         title: Text(
           'Linked Devices',
