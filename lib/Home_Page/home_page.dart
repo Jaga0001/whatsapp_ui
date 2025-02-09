@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:whatsapp_ui/Call_Page/call_page.dart';
 import 'package:whatsapp_ui/Chat_Page/chat_page.dart';
+import 'package:whatsapp_ui/Link_Devices_Page/link_devices_page.dart';
 import 'package:whatsapp_ui/Status_Page/status_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -141,7 +142,12 @@ class _HomePageState extends State<HomePage> {
                           style: GoogleFonts.poppins(color: Colors.white)),
                     ),
                     PopupMenuItem<String>(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LinkDevicesPage()));
+                      },
                       value: 'Linked devices',
                       child: Text('Linked devices',
                           style: GoogleFonts.poppins(color: Colors.white)),
