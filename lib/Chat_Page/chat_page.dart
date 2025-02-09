@@ -3,7 +3,10 @@ import 'package:whatsapp_ui/Message_Page/message_page.dart';
 import 'package:whatsapp_ui/Models/user_model.dart';
 
 class ChatPage extends StatefulWidget {
-  const ChatPage({super.key});
+  final String searchText;
+  //final List<String> filteredChats; // No longer needed.
+
+  const ChatPage({Key? key, required this.searchText}) : super(key: key);
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -93,8 +96,8 @@ class _ChatPageState extends State<ChatPage> {
         icon: Icon(Icons.done_all)),
   ];
 
-  // Controller for the search bar
-  TextEditingController _searchController = TextEditingController();
+  // Controller for the search bar (no longer needed here)
+  // TextEditingController _searchController = TextEditingController();
 
   // Filtered list of users based on search query
   List<Usermodel> filteredUsers = [];
@@ -102,21 +105,30 @@ class _ChatPageState extends State<ChatPage> {
   @override
   void initState() {
     super.initState();
-    // Initialize filteredUsers with all users
-    filteredUsers = Users;
-    // Listen for changes in the search bar
-    _searchController.addListener(_filterUsers);
+    // Initialize filteredUsers based on initial searchText
+    _filterUsers();
+    // No longer need to listen for changes in the search bar here.
+    // _searchController.addListener(_filterUsers);
+  }
+
+  @override
+  void didUpdateWidget(covariant ChatPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    //Re-filter only when the searchText changes.
+    if (widget.searchText != oldWidget.searchText) {
+      _filterUsers();
+    }
   }
 
   @override
   void dispose() {
-    _searchController.dispose();
+    // _searchController.dispose(); // No longer needed
     super.dispose();
   }
 
   // Function to filter users based on search query
   void _filterUsers() {
-    String query = _searchController.text.toLowerCase();
+    String query = widget.searchText.toLowerCase();
     setState(() {
       filteredUsers = Users.where((user) =>
           user.UserName!.toLowerCase().contains(query) ||
@@ -129,25 +141,6 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
       body: Column(
         children: [
-          // Search Bar
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Container(
-              height: 50,
-              width: 500,
-              child: TextField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: 'Search...',
-                  prefixIcon: Icon(Icons.search),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-          ),
-          // List of Users
           Expanded(
             child: ListView.builder(
               itemCount: filteredUsers.length,
