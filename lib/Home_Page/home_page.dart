@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:whatsapp_ui/Call_Page/call_page.dart';
 import 'package:whatsapp_ui/Chat_Page/chat_page.dart';
 import 'package:whatsapp_ui/Link_Devices_Page/link_devices_page.dart';
+import 'package:whatsapp_ui/Payment_Page/payment_page.dart';
 import 'package:whatsapp_ui/Settings_Page/settings_page.dart';
 import 'package:whatsapp_ui/Status_Page/status_page.dart';
 
@@ -158,7 +159,12 @@ class _HomePageState extends State<HomePage> {
                           style: GoogleFonts.poppins(color: Colors.white)),
                     ),
                     PopupMenuItem<String>(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PaymentPage()));
+                      },
                       value: 'Payments',
                       child: Text('Payments',
                           style: GoogleFonts.poppins(color: Colors.white)),
