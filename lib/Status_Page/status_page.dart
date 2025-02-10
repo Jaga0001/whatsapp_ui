@@ -77,6 +77,7 @@ class _StatusPageState extends State<StatusPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         floatingActionButton: Column(
           spacing: 10,
           mainAxisAlignment: MainAxisAlignment.end,
