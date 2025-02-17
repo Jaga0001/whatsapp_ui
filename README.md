@@ -30,7 +30,11 @@ lib/
 │   ├── link_devices_page.dart
 ├── Message_Page/
 │   ├── message_page.dart
-├── Models/   # (To be used for data models)
+├── Models/
+│   ├── calls_model.dart
+│   ├── settings_models.dart
+│   ├── status_model.dart
+│   ├── user_model.dart
 ├── Payment_Page/
 │   ├── payment_page.dart
 ├── Settings_Page/
@@ -94,5 +98,4 @@ Contributions are welcome! Feel free to fork this project, make changes, and sub
 This project is open-source and available under the [MIT License](LICENSE).
 
 ## 📬 Contact
-For any queries or suggestions, reach out to me at [your-email@example.com] or connect on [LinkedIn](https://linkedin.com/in/your-profile).
-
+For any queries or suggestions, reach out to me at [jagavanthaarunkumar@gmail.com] or connect on [LinkedIn](https://linkedin.com/in/jaga0001)
