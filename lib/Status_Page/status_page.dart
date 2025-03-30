@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:whatsapp_ui/Models/status_model.dart';
+import 'dart:async';
 
 class StatusPage extends StatefulWidget {
   final String searchText;
@@ -120,20 +121,35 @@ class _StatusPageState extends State<StatusPage> {
                       fontSize: 14,
                     ),
                   ),
-                  leading: Container(
-                    height: 50, // Increased from 60
-                    width: 50, // Increased from 60
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(
-                        color: Colors.green,
-                        width: 2,
+                  leading: GestureDetector(
+                    onTap: () {
+                      // Show my status when tapped
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StatusViewer(
+                            image:
+                                'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+                            name: 'My Status',
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 50,
+                      width: 50,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Colors.green,
+                          width: 2,
+                        ),
                       ),
-                    ),
-                    child: const CircleAvatar(
-                      radius: 40, // Increased from 30
-                      backgroundImage: NetworkImage(
-                        'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+                      child: const CircleAvatar(
+                        radius: 40,
+                        backgroundImage: NetworkImage(
+                          'https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg',
+                        ),
                       ),
                     ),
                   ),
@@ -164,19 +180,33 @@ class _StatusPageState extends State<StatusPage> {
                       itemBuilder: (context, index) {
                         final StatusModel status = filteredStatuses[index];
                         return ListTile(
-                          leading: Container(
-                            height: 50, // Increased from 60
-                            width: 50, // Increased from 60
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.green,
-                                width: 2,
+                          leading: GestureDetector(
+                            onTap: () {
+                              // Show contact status when tapped
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => StatusViewer(
+                                    image: status.image,
+                                    name: status.name,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: Colors.green,
+                                  width: 2,
+                                ),
                               ),
-                            ),
-                            child: CircleAvatar(
-                              radius: 40, // Increased from 30
-                              backgroundImage: NetworkImage(status.image),
+                              child: CircleAvatar(
+                                radius: 40,
+                                backgroundImage: NetworkImage(status.image),
+                              ),
                             ),
                           ),
                           title: Text(
@@ -198,5 +228,106 @@ class _StatusPageState extends State<StatusPage> {
             ],
           ),
         ));
+  }
+}
+
+// Status viewer widget
+class StatusViewer extends StatefulWidget {
+  final String image;
+  final String name;
+
+  const StatusViewer({Key? key, required this.image, required this.name})
+      : super(key: key);
+
+  @override
+  State<StatusViewer> createState() => _StatusViewerState();
+}
+
+class _StatusViewerState extends State<StatusViewer> {
+  late Timer _timer;
+  double _progress = 0.0;
+
+  @override
+  void initState() {
+    super.initState();
+    // Start timer to update progress
+    const totalDuration = 8; // 8 seconds
+    const updateInterval = 100; // Update every 100ms
+    _timer =
+        Timer.periodic(const Duration(milliseconds: updateInterval), (timer) {
+      setState(() {
+        _progress += 1 / (totalDuration * 1000 / updateInterval);
+        if (_progress >= 1.0) {
+          _timer.cancel();
+          Navigator.pop(context);
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer.cancel();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            // Progress indicator at the top
+            Positioned(
+              top: 10,
+              left: 10,
+              right: 10,
+              child: LinearProgressIndicator(
+                value: _progress,
+                backgroundColor: Colors.grey[800],
+                valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+              ),
+            ),
+            // User info
+            Positioned(
+              top: 30,
+              left: 10,
+              child: Row(
+                children: [
+                  const BackButton(color: Colors.white),
+                  CircleAvatar(
+                    radius: 15,
+                    backgroundImage: NetworkImage(widget.image),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    widget.name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // Main status image
+            Center(
+              child: GestureDetector(
+                onTap: () {
+                  // Close status when tapped
+                  Navigator.pop(context);
+                },
+                child: Image.network(
+                  widget.image,
+                  fit: BoxFit.contain,
+                  height: MediaQuery.of(context).size.height * 0.7,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
